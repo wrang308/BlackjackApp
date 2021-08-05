@@ -1,4 +1,5 @@
 
+const drawButton = document.getElementById("drawButton");
 
 const API = "https://www.deckofcardsapi.com/api/deck/";
 let deckId = "";
@@ -28,3 +29,9 @@ const drawCard = (user, count) => {
   
 }
 
+
+
+
+drawButton.addEventListener("click",(function(){
+drawCard(playerHand, 1);
+}));
