@@ -81,7 +81,9 @@ const addCardToUser = (user, cards) => {
     if(getTotal(playerHand) > 21){
         stayButton.style.display = "none";
         drawButton.style.display = "none";
-        checkWinner();
+        setTimeout(() => {
+            checkWinner();    
+        }, 1400);
     }
 
 }
@@ -174,7 +176,8 @@ const playAgain = () => {
 /* 
     setTimeout(function() {
     }, 1000)
- */}
+ */
+}
 
 const addCardsToElement = (element, ...card) => {
     console.log(card)
@@ -186,7 +189,6 @@ const addCardsToElement = (element, ...card) => {
     div.appendChild(img);
     div.classList.add("tst");
     element.appendChild(div);
-
 
     if(card.length > 1){
         addCardsToElement(element, ...card.shift());
