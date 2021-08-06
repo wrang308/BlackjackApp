@@ -7,6 +7,9 @@ const dealerWinsElement = document.getElementById("dealerWins");
 const playerWinsElement = document.getElementById("playerWins");
 const dealerCards = document.getElementById("dealerCards");
 const playerCards = document.getElementById("playerCards");
+const winner = document.getElementById("winner");
+const playAgainButton = document.getElementById("playAgainButton");
+
 const jokerCard = {"image":"https://deckofcardsapi.com/static/img/X1.png"};
 
 
@@ -19,6 +22,7 @@ let playerWins = 0;
 let dealerWins = 0;
 
 const initNewGame = () => {
+    
     playerHand = [];
     dealerHand = [];
     drawCard(playerHand, 2);
@@ -64,14 +68,7 @@ const drawCard = (user, count) => {
 
 const addCardToUser = (user, cards) => {
     let elem = (user === playerHand) ? playerCards : dealerCards;
-/*     for (const card of cards) {
-        addCardsToElement(elem, card);
-    } */
-/* 
-    for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        
-    } */
+
     for (let i = 0; i < cards.length; i++) {
         const card = cards[i];
         setTimeout(() => {
@@ -79,8 +76,14 @@ const addCardToUser = (user, cards) => {
         }, i * 2000);
     
     }
-    
     user.push(...cards);
+
+    if(getTotal(playerHand) > 21){
+        stayButton.style.display = "none";
+        drawButton.style.display = "none";
+        checkWinner();
+    }
+
 }
 
 const getTotal = (userCards) =>{
@@ -119,13 +122,16 @@ const renderTotal = () => {
 }
 
 const stay = () => {
+    stayButton.style.display = "none";
+    drawButton.style.display = "none";
+    dealerCards.removeChild(dealerCards.lastChild);
 
-dealerGetCard();
+    dealerGetCard();
 
 }
 
 const dealerGetCard = () => {
-    dealerTotal.innerText = getTotal(dealerHand) > 21 ? "bust" : getTotal(dealerHand);
+    renderTotal();
     if(getTotal(dealerHand) < 17){
         drawCard(dealerHand, 1)
         setTimeout(function() {
@@ -141,18 +147,34 @@ const dealerGetCard = () => {
 const checkWinner = () => {
     if(getTotal(playerHand) > 21){
         dealerWins++;
+        winner.innerText = "Dealer wins";
     }else if(getTotal(dealerHand) > 21){
         playerWins++;
+        winner.innerText = "Player wins";
     }else if(getTotal(dealerHand) < getTotal(playerHand)){
         playerWins++;
+        winner.innerText = "Player wins";
     }else{
         dealerWins++;
+        winner.innerText = "Dealer wins";
     }
-    setTimeout(function() {
-        initNewGame();
-    }, 1000)
+    playAgainButton.style.display = "block";
+    setTimeout(() => {
+        renderTotal();  
+    }, 1500);
 
 }
+
+const playAgain = () => {
+    playAgainButton.style.display = "none";
+    drawButton.style.display = "initial";
+    stayButton.style.display = "initial";
+    winner.innerHTML = "";
+    initNewGame();
+/* 
+    setTimeout(function() {
+    }, 1000)
+ */}
 
 const addCardsToElement = (element, ...card) => {
     console.log(card)
@@ -177,4 +199,6 @@ drawCard(playerHand, 1);
 }));
 
 stayButton.addEventListener("click", stay);
+
+playAgainButton.addEventListener("click", playAgain);
 
