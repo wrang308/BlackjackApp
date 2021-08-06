@@ -5,3 +5,42 @@ body{
 button{
     bottom: 20px;
 }
+
+@keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
+
+.tst {
+    animation: 1.5s ease-out 0s 1 slideInFromRight;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.white-text{
+    color: white;
+    font-size: 3em;
+    font-weight: 500;
+}
+
+.cards{
+    margin: 0 auto;
+    width: fit-content;
+}
