@@ -9,12 +9,16 @@ const dealerCards = document.getElementById("dealerCards");
 const playerCards = document.getElementById("playerCards");
 const winner = document.getElementById("winner");
 const playAgainButton = document.getElementById("playAgainButton");
+const getPlayerNameElement = document.getElementById("getPlayerNameElement");
+const getPlayerNameButton = document.getElementById("getPlayerNameButton");
+const nameInput = document.getElementById("nameInput");
 
 const jokerCard = {"image":"https://deckofcardsapi.com/static/img/X1.png"};
-
+let playerName = "";
 
 const API = "https://www.deckofcardsapi.com/api/deck/";
 let deckId = "";
+let canDrawCard = false;
 
 let playerHand = [];
 let dealerHand = [];
@@ -22,20 +26,18 @@ let playerWins = 0;
 let dealerWins = 0;
 
 const initNewGame = () => {
-    
+    canDrawCard = false;
     playerHand = [];
     dealerHand = [];
     drawCard(playerHand, 2);
     setTimeout(() => {
         drawCard(dealerHand, 1);  
          
-    }, 3500);
+    }, 3000);
     setTimeout(() => {
-        console.log("before calling joker")
+        canDrawCard = true;
         addCardsToElement(dealerCards, jokerCard);   
-    }, 5000);
-    
-
+    }, 4500);
     
     playerCards.innerHTML = "";
     dealerCards.innerHTML = "";
@@ -46,12 +48,9 @@ fetch(API + "new/shuffle/?deck_count=6")
     .then(response => response.json())
     .then(data => deck = data)
     .then(deck =>  deckId = deck.deck_id)
-    .then(initNewGame)
     .catch((error) => {
         console.log(error)
     });
-
-console.log(deckId);
 
 const drawCard = (user, count) => {
 
@@ -117,13 +116,14 @@ const getTotal = (userCards) =>{
 }
 
 const renderTotal = () => {
-    dealerWinsElement.innerText = "dealer:" + dealerWins;
-    playerWinsElement.innerText = "player:" + playerWins;
+    dealerWinsElement.innerText = "dealer: " + dealerWins;
+    playerWinsElement.innerText = playerName + ": " + playerWins;
     playerTotal.innerText = getTotal(playerHand) > 21 ? "bust" : getTotal(playerHand);
     dealerTotal.innerText = getTotal(dealerHand) > 21 ? "bust" : getTotal(dealerHand);
 }
 
 const stay = () => {
+    canDrawCard = false;
     stayButton.style.display = "none";
     drawButton.style.display = "none";
     dealerCards.removeChild(dealerCards.lastChild);
@@ -143,8 +143,6 @@ const dealerGetCard = () => {
         checkWinner();
     }
 }
-
-
 
 const checkWinner = () => {
     if(getTotal(playerHand) > 21){
@@ -173,16 +171,9 @@ const playAgain = () => {
     stayButton.style.display = "initial";
     winner.innerHTML = "";
     initNewGame();
-/* 
-    setTimeout(function() {
-    }, 1000)
- */
 }
 
-const addCardsToElement = (element, ...card) => {
-    console.log(card)
-    console.log(card[0])
-    
+const addCardsToElement = (element, ...card) => {    
     let div = document.createElement('div');
     let img = document.createElement('img');
     img.src = card[0].image;
@@ -197,10 +188,22 @@ const addCardsToElement = (element, ...card) => {
 }
 
 drawButton.addEventListener("click",(function(){
+if(canDrawCard){
 drawCard(playerHand, 1);
+}
 }));
 
 stayButton.addEventListener("click", stay);
 
 playAgainButton.addEventListener("click", playAgain);
+
+getPlayerNameButton.addEventListener("click", () => {
+getPlayerNameElement.classList.add("removed1");
+});
+
+getPlayerNameElement.addEventListener("transitionend", () =>{
+    playerName = nameInput.value;
+    getPlayerNameElement.remove();
+    initNewGame();
+});
 

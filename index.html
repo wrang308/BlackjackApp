@@ -10,7 +10,7 @@
 <body>
 
   <div class="col-sm-12" >
-    <div class="row cards" style="height: 314px;" id="dealerCards"></div>
+    <div class="row cards" id="dealerCards"></div>
     <div class="white-text"  id="dealerWins"></div>
   </div>
 
@@ -25,9 +25,9 @@
     <div style="height: 120px;">
     <div style="height:72px;" class="white-text" id="winner"></div>
     <div>
-    <button id="drawButton">Draw</button>
-    <button id="stayButton">Stay</button>
-    <button id="playAgainButton" style="display: none; margin: 0 auto;">Play again</button>
+    <button class="button" id="drawButton">Draw</button>
+    <button class="button" id="stayButton">Stay</button>
+    <button class="button" id="playAgainButton" style="display: none; margin: 0 auto;">Play again</button>
     </div>
     </div>
 
@@ -38,6 +38,16 @@
   <div class="col-sm-12 bottom">
     <div class="white-text" id="playerWins"></div>
     <div class="row cards " id="playerCards"></div>
+  </div>
+
+  <div id="getPlayerNameElement">
+    <div class="box" style="text-align: center;">
+    <div style="font-size: 2em;">What is your name?</div>
+    <br>
+    <input id="nameInput" type="text" style="margin-bottom: 10px;">
+    <br>
+    <button  id="getPlayerNameButton">Play</button>
+    </div>
   </div>
 
   <script src="js/app.js"></script>
